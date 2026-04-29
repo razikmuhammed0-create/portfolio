@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Razik Muhammed — Filmmaker & Brand Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,700;1,300;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-2: #111114;
+    --bg-3: #16161a;
+    --ink: #f4f1ea;
+    --ink-dim: #8a857a;
+    --accent: #d4a574;
+    --accent-2: #c8553d;
+    --line: rgba(244,241,234,0.12);
+    --whatsapp: #25D366;
+    --serif: 'Cormorant Garamond', 'Times New Roman', serif;
+    --sans: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-weight: 300;
+    overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::after {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 200;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay; opacity: 0.6;
+    animation: grainShift 0.3s steps(4) infinite;
+  }
+  @keyframes grainShift {
+    0%{transform:translate(0,0)} 25%{transform:translate(-1%,1%)}
+    50%{transform:translate(1%,-1%)} 75%{transform:translate(-1%,-1%)}
+    100%{transform:translate(1%,1%)}
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 199;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%);
+  }
+  #scene { position: fixed; inset: 0; z-index: 0; }
+
+  #loader {
+    position: fixed; inset: 0; background: var(--bg); z-index: 999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 1.5rem; transition: opacity 0.8s ease 0.3s, visibility 0.8s ease 0.3s;
+  }
+  #loader.done { opacity: 0; visibility: hidden; }
+  .loader-ring {
+    width: 60px; height: 60px;
+    border: 1px solid var(--line);
+    border-top-color: var(--accent);
+    border-radius: 50%; animation: spin 1.2s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loader p {
+    font-family: var(--mono); font-size: 0.75rem;
+    letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-dim);
+  }
+
+  .whatsapp-float {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 150;
+    width: 60px; height: 60px;
+    background: var(--whatsapp); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-decoration: none;
+    animation: wppulse 2.5s ease-in-out infinite;
+  }
+  .whatsapp-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 40px rgba(37, 211, 102, 0.6);
+  }
+  .whatsapp-float svg { width: 32px; height: 32px; fill: white; }
+  @keyframes wppulse {
+    0%, 100% { box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4), 0 0 0 0 rgba(37, 211, 102, 0.5); }
+    50% { box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4), 0 0 0 18px rgba(37, 211, 102, 0); }
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 3rem; mix-blend-mode: difference;
+  }
+  .brand {
+    font-family: var(--serif); font-style: italic; font-size: 1.4rem;
+    color: var(--ink); text-decoration: none; letter-spacing: 0.02em;
+  }
+  .brand b { font-style: normal; font-weight: 500; }
+  .nav-links { display: flex; list-style: none; gap: 2.5rem; }
+  .nav-links a {
+    color: var(--ink); text-decoration: none;
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    position: relative; padding-bottom: 4px;
+  }
+  .nav-links a::after {
+    content: ""; position: absolute; bottom: 0; left: 0; width: 0; height: 1px;
+    background: var(--ink); transition: width 0.4s cubic-bezier(.7,0,.3,1);
+  }
+  .nav-links a:hover::after { width: 100%; }
+
+  main { position: relative; z-index: 10; }
+
+  /* ─────── HERO with portrait ─────── */
+  .hero {
+    min-height: 100vh;
+    padding: 6rem 3rem 4rem;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-text { position: relative; z-index: 5; }
+
+  .eyebrow {
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 1rem;
+    opacity: 0; animation: fadeUp 1s 0.5s forwards;
+  }
+  .eyebrow::before { content: ""; width: 40px; height: 1px; background: var(--accent); }
+  .hero h1 {
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(2.8rem, 8vw, 8rem);
+    line-height: 0.92; letter-spacing: -0.02em;
+  }
+  .hero h1 .line { display: block; overflow: hidden; }
+  .hero h1 .line span {
+    display: inline-block; transform: translateY(110%);
+    animation: revealUp 1.2s cubic-bezier(.7,0,.2,1) forwards;
+  }
+  .hero h1 .line:nth-child(1) span { animation-delay: 0.7s; }
+  .hero h1 .line:nth-child(2) span { animation-delay: 0.85s; }
+  .hero h1 .line:nth-child(3) span { animation-delay: 1.0s; }
+  .hero h1 em { font-style: italic; color: var(--accent); font-weight: 300; }
+  @keyframes revealUp { to { transform: translateY(0); } }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  .hero-tagline {
+    margin-top: 2rem;
+    font-family: var(--serif);
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    color: var(--ink-dim); max-width: 540px;
+    line-height: 1.5;
+    opacity: 0; animation: fadeUp 1s 1.4s forwards;
+  }
+  .hero-tagline em { color: var(--accent); font-style: italic; }
+
+  .hero-cta {
+    margin-top: 2.5rem;
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 1s 1.6s forwards;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    padding: 1rem 1.8rem;
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    border: 1px solid var(--ink); color: var(--ink);
+    text-decoration: none; transition: all 0.3s;
+    background: transparent; cursor: pointer;
+  }
+  .btn:hover { background: var(--ink); color: var(--bg); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .btn.primary:hover { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+  .btn.wa { background: var(--whatsapp); border-color: var(--whatsapp); color: white; }
+  .btn.wa:hover { background: #1da851; border-color: #1da851; }
+
+  /* ─────── PORTRAIT — film strip frame ─────── */
+  .hero-portrait {
+    position: relative;
+    perspective: 1500px;
+    opacity: 0;
+    animation: portraitIn 1.4s 0.9s cubic-bezier(.7,0,.2,1) forwards;
+  }
+  @keyframes portraitIn {
+    to { opacity: 1; }
+  }
+
+  .portrait-frame {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    aspect-ratio: 3/4;
+    margin: 0 auto;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(.2,.8,.2,1);
+  }
+
+  /* film strip body */
+  .film-strip {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    border: 1px solid rgba(244,241,234,0.15);
+    box-shadow:
+      0 30px 80px -20px rgba(0,0,0,0.8),
+      0 0 60px -10px rgba(212,165,116,0.15);
+    overflow: hidden;
+  }
+
+  /* top + bottom film perforations */
+  .film-strip::before,
+  .film-strip::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    height: 28px;
+    background-color: #000;
+    background-image:
+      radial-gradient(ellipse 10px 6px at center, var(--bg) 70%, transparent 71%);
+    background-size: 26px 100%;
+    background-repeat: repeat-x;
+    background-position: center;
+    z-index: 4;
+    border-color: rgba(244,241,234,0.08);
+  }
+  .film-strip::before { top: 0; border-bottom: 1px solid rgba(244,241,234,0.08); }
+  .film-strip::after  { bottom: 0; border-top: 1px solid rgba(244,241,234,0.08); }
+
+  /* the actual portrait area */
+  .portrait-img {
+    position: absolute;
+    top: 28px; bottom: 28px; left: 0; right: 0;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 50% 35%, rgba(212,165,116,0.4) 0%, transparent 60%),
+      linear-gradient(180deg, #2a1a14 0%, #1a1410 50%, #0a0606 100%);
+  }
+
+  /* ↓ swap this img tag's src for your real photo. SVG silhouette is the placeholder */
+  .portrait-img img,
+  .portrait-img .placeholder-svg {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    /* duotone effect via filter */
+    filter: grayscale(100%) contrast(1.1) brightness(0.85) sepia(0.5) hue-rotate(-15deg) saturate(1.3);
+    mix-blend-mode: screen;
+  }
+
+  /* warm cinematic color overlay */
+  .portrait-img::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 30% 40%, rgba(212,165,116,0.35), transparent 60%),
+      radial-gradient(circle at 70% 70%, rgba(200,85,61,0.25), transparent 60%);
+    mix-blend-mode: overlay;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* dark vignette around portrait */
+  .portrait-img::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.7) 100%);
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  /* technical "slate" overlays — top-left and bottom-right */
+  .slate-tl, .slate-br {
+    position: absolute;
+    z-index: 5;
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(244,241,234,0.6);
+    pointer-events: none;
+  }
+  .slate-tl {
+    top: 38px; left: 12px;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .slate-tl .red-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--accent-2); border-radius: 50%;
+    margin-right: 5px;
+    animation: recBlink 1.5s ease-in-out infinite;
+    box-shadow: 0 0 6px var(--accent-2);
+  }
+  @keyframes recBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .slate-br {
+    bottom: 38px; right: 12px;
+    text-align: right;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+
+  /* signature label below frame */
+  .portrait-label {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .portrait-label .gold { color: var(--accent); }
+  .portrait-label .signature {
+    display: block;
+    margin-top: 0.4rem;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: var(--ink);
+  }
+
+  /* corner brackets (camera viewfinder feel) */
+  .corner {
+    position: absolute;
+    width: 24px; height: 24px;
+    border-color: var(--accent);
+    z-index: 6;
+    transition: all 0.4s;
+  }
+  .corner.tl { top: -8px; left: -8px; border-top: 2px solid; border-left: 2px solid; }
+  .corner.tr { top: -8px; right: -8px; border-top: 2px solid; border-right: 2px solid; }
+  .corner.bl { bottom: -8px; left: -8px; border-bottom: 2px solid; border-left: 2px solid; }
+  .corner.br { bottom: -8px; right: -8px; border-bottom: 2px solid; border-right: 2px solid; }
+  .portrait-frame:hover .corner { width: 32px; height: 32px; }
+
+  /* glow behind portrait */
+  .portrait-glow {
+    position: absolute;
+    inset: -40px;
+    background: radial-gradient(ellipse at center, rgba(212,165,116,0.25), transparent 70%);
+    z-index: -1;
+    filter: blur(30px);
+    pointer-events: none;
+  }
+
+  .hero-meta {
+    position: absolute;
+    bottom: 2rem; left: 3rem; right: 3rem;
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-dim);
+    z-index: 5;
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 0.5rem; }
+  .hero-meta .dot {
+    width: 6px; height: 6px; background: var(--accent); border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 50% { opacity: 0.3; } }
+
+  /* ─────── Sections (rest unchanged) ─────── */
+  section { padding: 8rem 3rem; position: relative; }
+  .section-head {
+    display: flex; align-items: baseline; gap: 2rem;
+    margin-bottom: 5rem; flex-wrap: wrap;
+  }
+  .section-num {
+    font-family: var(--mono); font-size: 0.75rem;
+    letter-spacing: 0.3em; color: var(--accent);
+  }
+  .section-head h2 {
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    letter-spacing: -0.01em; line-height: 1;
+  }
+  .section-head h2 em { color: var(--accent); font-style: italic; }
+
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem;
+    max-width: 1400px; margin: 0 auto; align-items: start;
+  }
+  .about-lead {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+    font-weight: 300; line-height: 1.35; letter-spacing: -0.005em;
+  }
+  .about-lead em { color: var(--accent); font-style: italic; }
+  .about-body p {
+    margin-bottom: 1.4rem; font-size: 1.05rem;
+    line-height: 1.8; color: rgba(244,241,234,0.78); max-width: 540px;
+  }
+  .stat-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+    margin: 6rem auto 0; padding-top: 3rem;
+    border-top: 1px solid var(--line); max-width: 1400px;
+  }
+  .stat .num {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-weight: 300; line-height: 1; color: var(--accent);
+  }
+  .stat .label {
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ink-dim); margin-top: 0.6rem;
+  }
+
+  .philosophy {
+    background: var(--bg-2); margin: 4rem 0;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .philosophy-inner { max-width: 1400px; margin: 0 auto; }
+  .principles {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+    margin-top: 2rem;
+  }
+  .principle {
+    padding: 3rem 2.5rem;
+    border-right: 1px solid var(--line);
+    position: relative;
+  }
+  .principle:last-child { border-right: none; }
+  .principle-num {
+    font-family: var(--serif); font-style: italic;
+    font-size: 4rem; line-height: 1; color: var(--accent);
+    margin-bottom: 1.5rem; opacity: 0.6;
+  }
+  .principle h3 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 1.6rem; margin-bottom: 1rem; line-height: 1.2;
+  }
+  .principle h3 em { font-style: italic; color: var(--accent); font-weight: 300; }
+  .principle p { font-size: 0.95rem; line-height: 1.7; color: rgba(244,241,234,0.7); }
+
+  .services-section { background: var(--bg-2); margin-top: 4rem; }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 0;
+    max-width: 1400px; margin: 0 auto; border: 1px solid var(--line);
+  }
+  .service {
+    padding: 3rem;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transition: background 0.4s; position: relative; overflow: hidden;
+    cursor: pointer;
+  }
+  .service:nth-child(2n) { border-right: none; }
+  .service:nth-last-child(-n+2) { border-bottom: none; }
+  .service:hover { background: rgba(212,165,116,0.05); }
+  .service-icon {
+    width: 50px; height: 50px;
+    border: 1px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+    transition: all 0.4s;
+  }
+  .service:hover .service-icon { background: var(--accent); transform: rotate(-5deg); }
+  .service-icon svg { width: 22px; height: 22px; stroke: var(--accent); fill: none; stroke-width: 1.5; transition: stroke 0.4s; }
+  .service:hover .service-icon svg { stroke: var(--bg); }
+  .service-num {
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.3em; color: var(--accent);
+    margin-bottom: 0.8rem; display: block;
+  }
+  .service h3 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 1.8rem; margin-bottom: 1rem; line-height: 1.2;
+  }
+  .service h3 em { font-style: italic; color: var(--accent); font-weight: 300; }
+  .service p { font-size: 0.95rem; line-height: 1.7; color: rgba(244,241,234,0.7); max-width: 460px; }
+  .service ul {
+    list-style: none; margin-top: 1.5rem;
+    padding-top: 1.5rem; border-top: 1px solid var(--line);
+  }
+  .service li {
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--ink-dim); padding: 0.4rem 0;
+  }
+  .service li::before { content: "— "; color: var(--accent); }
+
+  .work-list { max-width: 1500px; margin: 0 auto; }
+  .work-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 2fr 200px 100px;
+    gap: 2rem; padding: 2.5rem 1rem;
+    border-bottom: 1px solid var(--line); align-items: center;
+    transition: padding 0.4s, background 0.4s;
+    cursor: pointer; position: relative;
+  }
+  .work-row:first-child { border-top: 1px solid var(--line); }
+  .work-row:hover { padding-left: 2.5rem; background: rgba(212,165,116,0.04); }
+  .work-row:hover .work-title { color: var(--accent); }
+  .work-row:hover .work-arrow { transform: translateX(8px); color: var(--accent); }
+  .work-num { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-dim); letter-spacing: 0.2em; }
+  .work-title {
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 2.4vw, 2.2rem);
+    font-weight: 400; transition: color 0.3s; line-height: 1.1;
+  }
+  .work-title em { font-style: italic; color: var(--accent); font-weight: 300; }
+  .work-desc { font-size: 0.95rem; color: rgba(244,241,234,0.7); line-height: 1.6; }
+  .work-tags { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-dim); }
+  .work-tags span { display: block; margin-bottom: 0.3rem; }
+  .work-arrow { font-family: var(--serif); font-size: 1.5rem; color: var(--ink-dim); transition: all 0.3s; text-align: right; }
+
+  .insta-section {
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    padding: 8rem 3rem;
+    position: relative; overflow: hidden;
+  }
+  .insta-section::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(212,165,116,0.08), transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(200,85,61,0.08), transparent 50%);
+    pointer-events: none;
+  }
+  .insta-inner { max-width: 1400px; margin: 0 auto; text-align: center; position: relative; }
+  .insta-handle {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 9vw, 7rem);
+    font-weight: 300; line-height: 1;
+    margin: 1.5rem 0 2.5rem;
+    letter-spacing: -0.02em; display: inline-block;
+  }
+  .insta-handle a {
+    color: var(--ink); text-decoration: none;
+    transition: all 0.4s;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.3rem;
+  }
+  .insta-handle a:hover {
+    background: linear-gradient(135deg, #d4a574 0%, #c8553d 50%, #d4a574 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    border-bottom-color: var(--accent);
+  }
+  .insta-handle em { font-style: italic; color: var(--accent); }
+  .insta-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem;
+    margin-top: 4rem; max-width: 1200px;
+    margin-left: auto; margin-right: auto;
+  }
+  .insta-tile {
+    aspect-ratio: 1; position: relative; overflow: hidden;
+    border: 1px solid var(--line);
+    transition: transform 0.4s, border-color 0.4s;
+    cursor: pointer;
+  }
+  .insta-tile:hover { transform: scale(1.05); border-color: var(--accent); z-index: 2; }
+  .insta-tile::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%);
+    transition: opacity 0.4s;
+  }
+  .insta-tile:hover::after { opacity: 0.2; }
+  .insta-tile:nth-child(1) { background: linear-gradient(135deg, #d4a574, #c8553d); }
+  .insta-tile:nth-child(2) { background: linear-gradient(135deg, #1a1410, #2a1a14); }
+  .insta-tile:nth-child(3) { background: linear-gradient(135deg, #c8553d, #6b4035); }
+  .insta-tile:nth-child(4) { background: linear-gradient(135deg, #2a2520, #4a3a30); }
+  .insta-tile:nth-child(5) { background: linear-gradient(135deg, #d4a574, #8a6f4a); }
+  .insta-tile:nth-child(6) { background: linear-gradient(135deg, #6b4035, #c8553d); }
+  .insta-tile:nth-child(7) { background: linear-gradient(135deg, #1a1410, #d4a574); }
+  .insta-tile:nth-child(8) { background: linear-gradient(135deg, #4a3a30, #c8553d); }
+  .insta-tile:nth-child(9) { background: linear-gradient(135deg, #c8553d, #d4a574); }
+  .insta-tile:nth-child(10) { background: linear-gradient(135deg, #d4a574, #2a1a14); }
+  .insta-tile:nth-child(11) { background: linear-gradient(135deg, #6b4035, #1a1410); }
+  .insta-tile:nth-child(12) { background: linear-gradient(135deg, #2a2520, #d4a574); }
+  .insta-tile-overlay {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.4);
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .insta-cta {
+    margin-top: 4rem;
+    display: inline-flex; align-items: center; gap: 0.8rem;
+    padding: 1.2rem 2.5rem;
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--ink); text-decoration: none;
+    font-family: var(--mono); font-size: 0.75rem;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .insta-cta::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    opacity: 0; transition: opacity 0.4s; z-index: -1;
+  }
+  .insta-cta:hover { border-color: transparent; color: white; }
+  .insta-cta:hover::before { opacity: 1; }
+  .insta-cta svg { width: 18px; height: 18px; }
+
+  .clients-section { padding: 6rem 3rem; }
+  .clients-marquee {
+    overflow: hidden; white-space: nowrap;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    padding: 2rem 0;
+  }
+  .clients-track {
+    display: inline-block; animation: marqueeScroll 40s linear infinite;
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(2rem, 4vw, 3.5rem); color: var(--ink);
+  }
+  .clients-track span { margin: 0 2.5rem; }
+  .clients-track .sep { color: var(--accent); }
+  @keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .contact { padding: 10rem 3rem; position: relative; }
+  .contact-head { text-align: center; margin-bottom: 6rem; }
+  .contact-head .eyebrow { display: inline-flex; }
+  .contact-head h2 {
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(3rem, 9vw, 8rem);
+    line-height: 0.95; margin: 1rem 0 2rem; letter-spacing: -0.02em;
+  }
+  .contact-head h2 em { font-style: italic; color: var(--accent); }
+  .contact-head p {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+    color: var(--ink-dim); max-width: 600px; margin: 0 auto;
+  }
+  .contact-layout {
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem;
+    max-width: 1300px; margin: 0 auto; align-items: start;
+  }
+  .contact-direct h3 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 2rem; margin-bottom: 2.5rem; line-height: 1.1;
+  }
+  .contact-direct h3 em { font-style: italic; color: var(--accent); }
+  .contact-method {
+    display: flex; align-items: center; gap: 1.2rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none; color: var(--ink);
+    transition: all 0.3s;
+  }
+  .contact-method:hover { padding-left: 1rem; }
+  .contact-method:hover .cm-label { color: var(--accent); }
+  .contact-method:first-child { border-top: 1px solid var(--line); }
+  .cm-icon {
+    width: 42px; height: 42px;
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.3s;
+  }
+  .contact-method:hover .cm-icon { border-color: var(--accent); background: rgba(212,165,116,0.08); }
+  .cm-icon svg { width: 18px; height: 18px; fill: var(--ink); }
+  .contact-method.wa .cm-icon svg { fill: var(--whatsapp); }
+  .cm-text { flex: 1; }
+  .cm-meta {
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--ink-dim); margin-bottom: 0.2rem;
+  }
+  .cm-label { font-family: var(--serif); font-size: 1.2rem; transition: color 0.3s; }
+
+  .contact-form {
+    background: var(--bg-2); border: 1px solid var(--line); padding: 3rem;
+  }
+  .contact-form h3 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 1.5rem; margin-bottom: 0.5rem;
+  }
+  .contact-form .form-meta {
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ink-dim); margin-bottom: 2rem;
+  }
+  .form-group { margin-bottom: 1.5rem; }
+  .form-group label {
+    display: block;
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--ink-dim); margin-bottom: 0.6rem;
+  }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; padding: 0.9rem 1rem;
+    background: transparent; border: 1px solid var(--line);
+    color: var(--ink);
+    font-family: var(--sans); font-size: 0.95rem; font-weight: 300;
+    transition: border-color 0.3s;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    outline: none; border-color: var(--accent);
+  }
+  .form-group textarea { resize: vertical; min-height: 120px; font-family: var(--sans); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-submit {
+    width: 100%; padding: 1.1rem;
+    background: var(--accent); color: var(--bg);
+    border: none; cursor: pointer;
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    font-weight: 600; transition: all 0.3s;
+  }
+  .form-submit:hover { background: var(--ink); color: var(--bg); }
+  .form-note {
+    margin-top: 1rem;
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.15em; color: var(--ink-dim); text-align: center;
+  }
+
+  footer {
+    padding: 2.5rem 3rem; border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-dim);
+    flex-wrap: wrap; gap: 1rem;
+  }
+  footer .signature em {
+    font-family: var(--serif); font-style: italic;
+    text-transform: none; letter-spacing: 0.02em;
+    color: var(--accent); font-size: 0.85rem;
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 1s cubic-bezier(.7,0,.2,1), transform 1s cubic-bezier(.7,0,.2,1);
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ─────── Responsive ─────── */
+  @media (max-width: 1100px) {
+    .hero { grid-template-columns: 1fr; gap: 3rem; padding-top: 7rem; padding-bottom: 8rem; }
+    .hero-portrait { max-width: 320px; margin: 0 auto; }
+    .hero-meta { position: static; margin-top: 3rem; padding: 0; flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+  }
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    .nav-links a { font-size: 0.6rem; letter-spacing: 0.2em; }
+    .hero, section, .clients-section, .contact, .insta-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .principles { grid-template-columns: 1fr; }
+    .principle { border-right: none; border-bottom: 1px solid var(--line); padding: 2rem 0; }
+    .principle:last-child { border-bottom: none; }
+    .work-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 2rem 0; }
+    .work-row:hover { padding-left: 0; }
+    .work-arrow, .work-tags { display: none; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service { border-right: none; padding: 2rem; }
+    .service:nth-last-child(2) { border-bottom: 1px solid var(--line); }
+    .insta-grid { grid-template-columns: repeat(3, 1fr); }
+    .insta-tile:nth-child(n+10) { display: none; }
+    .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .contact-form { padding: 2rem; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; padding: 1.5rem; text-align: center; }
+    .whatsapp-float { bottom: 1.2rem; right: 1.2rem; width: 54px; height: 54px; }
+    .whatsapp-float svg { width: 28px; height: 28px; }
+  }
+  @media (max-width: 600px) {
+    .nav-links li:nth-child(2), .nav-links li:nth-child(3) { display: none; }
+    .hero-cta { flex-direction: column; }
+    .btn { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-ring"></div>
+  <p>Loading</p>
+</div>
+
+<canvas id="scene"></canvas>
+
+<a href="https://wa.me/9061807019" class="whatsapp-float" aria-label="WhatsApp" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<nav>
+  <a href="#" class="brand">Razik <b>Muhammed</b></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<main>
+  <header class="hero">
+
+    <!-- Text column -->
+    <div class="hero-text">
+      <div class="eyebrow">Filmmaker · Marketer · Brand Builder · Kerala, India</div>
+      <h1>
+        <span class="line"><span>I build</span></span>
+        <span class="line"><span><em>brands</em> that</span></span>
+        <span class="line"><span>people remember.</span></span>
+      </h1>
+      <p class="hero-tagline">
+        Films, digital marketing, personal branding, and app launches — all under <em>one roof.</em> One person who actually understands how each piece fits into the bigger picture.
+      </p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn primary">Start a project →</a>
+        <a href="https://wa.me/9061807019" class="btn wa" target="_blank">WhatsApp me</a>
+      </div>
+    </div>
+
+    <!-- Portrait column — cinematic film strip frame -->
+    <div class="hero-portrait" id="portrait">
+      <div class="portrait-glow"></div>
+      <div class="portrait-frame" id="portraitFrame">
+        <span class="corner tl"></span>
+        <span class="corner tr"></span>
+        <span class="corner bl"></span>
+        <span class="corner br"></span>
+
+        <div class="film-strip">
+          <!-- Tech overlays -->
+          <div class="slate-tl">
+            <span><i class="red-dot"></i>REC</span>
+            <span>RM-2026</span>
+            <span>4K · 24FPS</span>
+          </div>
+          <div class="slate-br">
+            <span>KERALA · IND</span>
+            <span>FRAME 001</span>
+            <span>ISO 800</span>
+          </div>
+
+          <!-- ▼▼▼ REPLACE WITH YOUR PHOTO ▼▼▼
+               When ready, delete the <svg> placeholder below and replace with:
+               <img src="your-photo.jpg" alt="Razik Muhammed" />
+               ▲▲▲ -->
+          <div class="portrait-img">
+            <img src="razik.jpg" alt="Razik Muhammed" />
+              <defs>
+                <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#3a2a1f"/>
+                  <stop offset="100%" stop-color="#0a0606"/>
+                </linearGradient>
+                <radialGradient id="rim" cx="0.7" cy="0.3" r="0.7">
+                  <stop offset="0%" stop-color="#d4a574" stop-opacity="0.6"/>
+                  <stop offset="100%" stop-color="#d4a574" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="300" height="400" fill="url(#bg)"/>
+              <rect width="300" height="400" fill="url(#rim)"/>
+              <!-- Silhouette of person with camera -->
+              <g fill="#1a0e08" opacity="0.95">
+                <!-- shoulders -->
+                <path d="M 40 400 L 40 320 Q 40 270 90 250 L 130 240 L 170 240 L 210 250 Q 260 270 260 320 L 260 400 Z"/>
+                <!-- neck -->
+                <rect x="130" y="220" width="40" height="35"/>
+                <!-- head -->
+                <ellipse cx="150" cy="180" rx="55" ry="62"/>
+                <!-- camera held up -->
+                <rect x="170" y="155" width="65" height="45" rx="4"/>
+                <rect x="178" y="148" width="20" height="10" rx="2"/>
+                <circle cx="202" cy="178" r="14" fill="#2a1810"/>
+                <circle cx="202" cy="178" r="9" fill="#0a0606"/>
+                <circle cx="202" cy="178" r="5" fill="#d4a574" opacity="0.4"/>
+                <!-- arm holding camera -->
+                <path d="M 195 250 Q 180 220 175 200 L 195 200 L 215 240 Z"/>
+              </g>
+              <!-- gentle highlight on head -->
+              <ellipse cx="135" cy="160" rx="20" ry="30" fill="#d4a574" opacity="0.15"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="portrait-label">
+        <span class="gold">DIRECTOR</span> · RAZIK MUHAMMED · <span class="gold">2026</span>
+        <span class="signature">"Tell the story. Build the brand."</span>
+      </div>
+    </div>
+
+    <div class="hero-meta">
+      <span><i class="dot"></i>Currently booking — 2026</span>
+      <span>Based in Kerala · Working across India & beyond</span>
+    </div>
+
+  </header>
+
+  <section id="about">
+    <div class="section-head reveal">
+      <span class="section-num">01 / About</span>
+      <h2>One person. <em>Four crafts.</em></h2>
+    </div>
+    <div class="about-grid reveal">
+      <p class="about-lead">
+        I'm Razik Muhammed — a filmmaker and marketer from Kerala who builds <em>complete brand systems,</em> not isolated deliverables.
+      </p>
+      <div class="about-body">
+        <p>Most creative people specialize in one thing. I deliberately don't. After years of watching clients waste time and money stitching together a videographer, a marketing agency, a brand designer, and an app developer who don't speak the same language — I decided to learn all four crafts properly and offer them as one coherent service.</p>
+        <p>That means when you work with me, the brand strategy informs the film. The film informs the digital campaign. The campaign informs the app launch. Every piece reinforces every other piece, because one person is holding the whole picture in their head.</p>
+        <p>I work with founders, small businesses, personal brands, and ambitious individuals across Kerala and India who are tired of fragmented vendor relationships and want someone who will own the outcome end-to-end.</p>
+      </div>
+    </div>
+    <div class="stat-row reveal">
+      <div class="stat"><div class="num">100+</div><div class="label">Projects delivered</div></div>
+      <div class="stat"><div class="num">40+</div><div class="label">Brands built</div></div>
+      <div class="stat"><div class="num">10M+</div><div class="label">Audience reach</div></div>
+      <div class="stat"><div class="num">7</div><div class="label">Years in practice</div></div>
+    </div>
+  </section>
+
+  <section class="philosophy">
+    <div class="philosophy-inner">
+      <div class="section-head reveal">
+        <span class="section-num">02 / Philosophy</span>
+        <h2>How I <em>actually</em> work.</h2>
+      </div>
+      <div class="principles reveal">
+        <div class="principle">
+          <div class="principle-num">i.</div>
+          <h3>Strategy <em>before</em> shutter</h3>
+          <p>Beautiful work that doesn't move the business is just decoration. Every project starts with what we're trying to achieve commercially — then I work backwards to the creative.</p>
+        </div>
+        <div class="principle">
+          <div class="principle-num">ii.</div>
+          <h3>One <em>integrated</em> system</h3>
+          <p>Your film, your social content, your website, your app, and your ads should feel like they came from the same brain. They will, because they did.</p>
+        </div>
+        <div class="principle">
+          <div class="principle-num">iii.</div>
+          <h3>Ship and <em>iterate</em></h3>
+          <p>I'd rather ship something good and improve it than wait six months for perfect. Most brands don't have a perfection problem. They have a momentum problem.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="services-section">
+    <div class="section-head reveal" style="max-width:1400px; margin: 0 auto 4rem;">
+      <span class="section-num">03 / Services</span>
+      <h2>What I <em>actually</em> do.</h2>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="6" width="14" height="12" rx="1"/><polygon points="22 8 16 12 22 16 22 8"/></svg>
+        </div>
+        <span class="service-num">/ 01 — Film & Production</span>
+        <h3>Brand <em>films</em> & commercials</h3>
+        <p>Brand films, product commercials, founder stories, and campaign films. End-to-end production with a small core team and the right specialists for each shoot.</p>
+        <ul>
+          <li>Concept & treatment</li>
+          <li>Production & on-set direction</li>
+          <li>Editing & color grade</li>
+          <li>Sound design & finishing</li>
+        </ul>
+      </div>
+      <div class="service">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
+        </div>
+        <span class="service-num">/ 02 — Digital Marketing</span>
+        <h3>Performance <em>marketing</em> that performs</h3>
+        <p>Paid ads, organic social, content systems, and the analytics to know what's actually working. I run campaigns the way I'd run them for my own business.</p>
+        <ul>
+          <li>Meta & Google Ads</li>
+          <li>Instagram & social strategy</li>
+          <li>Content calendars & production</li>
+          <li>Analytics & reporting</li>
+        </ul>
+      </div>
+      <div class="service">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21v-2a4 4 0 014-4h6a4 4 0 014 4v2"/></svg>
+        </div>
+        <span class="service-num">/ 03 — Branding</span>
+        <h3>Personal & <em>business</em> branding</h3>
+        <p>Build a brand that feels distinctly yours — whether you're a founder positioning yourself, a creator scaling up, or a business levelling up its identity.</p>
+        <ul>
+          <li>Brand positioning & voice</li>
+          <li>Visual identity systems</li>
+          <li>Personal brand strategy</li>
+          <li>Founder storytelling</li>
+        </ul>
+      </div>
+      <div class="service">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </div>
+        <span class="service-num">/ 04 — Apps & Launch</span>
+        <h3>App development & <em>launch marketing</em></h3>
+        <p>From concept to App Store. I partner on apps end-to-end — covering the marketing strategy, launch campaign, and ongoing growth that most dev shops can't deliver.</p>
+        <ul>
+          <li>Product positioning & UX</li>
+          <li>Development partnerships</li>
+          <li>Launch strategy & PR</li>
+          <li>User acquisition</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="section-head reveal">
+      <span class="section-num">04 / Selected work</span>
+      <h2>Recent <em>projects.</em></h2>
+    </div>
+    <div class="work-list">
+      <div class="work-row reveal">
+        <div class="work-num">/ 01</div>
+        <div class="work-title"><em>D2C Fashion Brand</em></div>
+        <div class="work-desc">Full brand build — identity, founder positioning, launch film, six-month performance campaign. 4× revenue in first quarter post-launch.</div>
+        <div class="work-tags"><span>Branding</span><span>Film</span><span>Marketing</span></div>
+        <div class="work-arrow">→</div>
+      </div>
+      <div class="work-row reveal">
+        <div class="work-num">/ 02</div>
+        <div class="work-title">Hospitality Group</div>
+        <div class="work-desc">Cinematic property films, Instagram strategy, and Meta ads for a boutique stay brand. Direct booking conversions up significantly.</div>
+        <div class="work-tags"><span>Film</span><span>Social</span><span>Ads</span></div>
+        <div class="work-arrow">→</div>
+      </div>
+      <div class="work-row reveal">
+        <div class="work-num">/ 03</div>
+        <div class="work-title"><em>Founder Personal Brand</em></div>
+        <div class="work-desc">Built a Kerala-based founder's personal brand from zero — content strategy, Instagram positioning, founder films, and inbound system.</div>
+        <div class="work-tags"><span>Personal Brand</span><span>Content</span></div>
+        <div class="work-arrow">→</div>
+      </div>
+      <div class="work-row reveal">
+        <div class="work-num">/ 04</div>
+        <div class="work-title">Mobile App Launch</div>
+        <div class="work-desc">End-to-end launch for a consumer mobile app — positioning, launch film, App Store optimization, paid acquisition.</div>
+        <div class="work-tags"><span>App</span><span>Launch</span><span>Growth</span></div>
+        <div class="work-arrow">→</div>
+      </div>
+      <div class="work-row reveal">
+        <div class="work-num">/ 05</div>
+        <div class="work-title"><em>F&B Startup</em></div>
+        <div class="work-desc">Brand identity, store films, social engine, and ongoing creative direction for a Kochi-based food brand.</div>
+        <div class="work-tags"><span>Branding</span><span>Film</span><span>Retainer</span></div>
+        <div class="work-arrow">→</div>
+      </div>
+      <div class="work-row reveal">
+        <div class="work-num">/ 06</div>
+        <div class="work-title">Wellness Brand</div>
+        <div class="work-desc">Year-long content engagement — strategy, monthly production, and performance marketing for a regional wellness business.</div>
+        <div class="work-tags"><span>Content</span><span>Marketing</span><span>Retainer</span></div>
+        <div class="work-arrow">→</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="insta-section">
+    <div class="insta-inner">
+      <span class="section-num reveal">05 / On Instagram</span>
+      <h2 class="insta-handle reveal">
+        Follow the <em>journey</em><br/>
+        <a href="https://www.instagram.com/_raziq_muhammad_/" target="_blank">@razikmuhammed</a>
+      </h2>
+      <p class="reveal" style="font-family: var(--serif); font-size: clamp(1.1rem, 1.6vw, 1.4rem); color: var(--ink-dim); max-width: 600px; margin: 0 auto; line-height: 1.5;">
+        Behind-the-scenes, work-in-progress, and the unfiltered version of building brands in Kerala. <em style="color:var(--accent); font-style: italic;">This is where most of my clients find me.</em>
+      </p>
+      <div class="insta-grid reveal">
+        <div class="insta-tile"><div class="insta-tile-overlay">Reel</div></div>
+        <div class="insta-tile"><div class="insta-tile-overlay">Carousel</div></div>
+        <div class="insta-tile"><div class="insta-tile-overlay">BTS</div></div>
+        <div class="insta-tile"><div class="insta-tile-overlay">Reel</div></div>
+        <div class="insta-tile"><div class="insta-tile-overlay">Story</div></div>
+        <div class="insta-tile"><div class="insta-tile-overlay">Reel</div></div>
+        <div class="insta-tile"><div class="insta-tile-overlay">Carousel</div></div>
+        <div class="insta-tile"><div class="insta-tile-overlay">BTS</div></div>
+        <div class="insta-tile"><div class="insta-tile-overlay">Reel</div></div>
+        <div class="insta-tile"><div class="insta-tile-overlay">Story</div></div>
+        <div class="insta-tile"><div class="insta-tile-overlay">Carousel</div></div>
+        <div class="insta-tile"><div class="insta-tile-overlay">Reel</div></div>
+      </div>
+      <a href="https://www.instagram.com/_raziq_muhammad_/" target="_blank" class="insta-cta reveal">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        Follow on Instagram
+      </a>
+    </div>
+  </section>
+
+  <section class="clients-section">
+    <div class="section-head reveal">
+      <span class="section-num">06 / Selected clients</span>
+      <h2>Trusted by <em>good company.</em></h2>
+    </div>
+    <div class="clients-marquee reveal">
+      <div class="clients-track">
+        <span>D2C Fashion</span><span class="sep">✦</span>
+        <span>Boutique Hospitality</span><span class="sep">✦</span>
+        <span>Founder Brands</span><span class="sep">✦</span>
+        <span>App Startups</span><span class="sep">✦</span>
+        <span>F&B Brands</span><span class="sep">✦</span>
+        <span>Wellness Studios</span><span class="sep">✦</span>
+        <span>Real Estate</span><span class="sep">✦</span>
+        <span>Education</span><span class="sep">✦</span>
+        <span>D2C Fashion</span><span class="sep">✦</span>
+        <span>Boutique Hospitality</span><span class="sep">✦</span>
+        <span>Founder Brands</span><span class="sep">✦</span>
+        <span>App Startups</span><span class="sep">✦</span>
+        <span>F&B Brands</span><span class="sep">✦</span>
+        <span>Wellness Studios</span><span class="sep">✦</span>
+        <span>Real Estate</span><span class="sep">✦</span>
+        <span>Education</span><span class="sep">✦</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="contact-head reveal">
+      <div class="eyebrow">07 / Get in touch</div>
+      <h2>Let's build<br/>something <em>worth remembering.</em></h2>
+      <p>Whether it's a film, a campaign, a brand, or an app launch — start with a conversation. Most projects begin with a 15-minute call to see if we're a fit.</p>
+    </div>
+
+    <div class="contact-layout">
+      <div class="contact-direct reveal">
+        <h3>Direct <em>lines.</em></h3>
+
+        <a href="https://wa.me/9061807019" target="_blank" class="contact-method wa">
+          <div class="cm-icon">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </div>
+          <div class="cm-text">
+            <div class="cm-meta">WhatsApp · Fastest reply</div>
+            <div class="cm-label">+91 00000 00000</div>
+          </div>
+        </a>
+
+        <a href="mailto:razikmuhammed0@gmail.com" class="contact-method">
+          <div class="cm-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </div>
+          <div class="cm-text">
+            <div class="cm-meta">Email</div>
+            <div class="cm-label">razikmuhammed0@gmail.com</div>
+          </div>
+        </a>
+
+        <a href="tel:+919061807019" class="contact-method">
+          <div class="cm-icon">
+            <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+          </div>
+          <div class="cm-text">
+            <div class="cm-meta">Call</div>
+            <div class="cm-label">+91 9061807019</div>
+          </div>
+        </a>
+
+        <a href="https://www.instagram.com/_raziq_muhammad_/" target="_blank" class="contact-method">
+          <div class="cm-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+          <div class="cm-text">
+            <div class="cm-meta">Instagram · DMs open</div>
+            <div class="cm-label">@razikmuhammed</div>
+          </div>
+        </a>
+      </div>
+
+      <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+        <h3>Or send a <em>brief.</em></h3>
+        <p class="form-meta">Reply within 24 hours</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Your name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="service">What do you need?</label>
+          <select id="service" name="service" required>
+            <option value="">— Select a service —</option>
+            <option>Brand film / commercial</option>
+            <option>Digital marketing</option>
+            <option>Personal branding</option>
+            <option>Business branding</option>
+            <option>App development & launch</option>
+            <option>Full brand build (multiple services)</option>
+            <option>Not sure — let's talk</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Tell me about your project</label>
+          <textarea id="message" name="message" required placeholder="What are you building? What's the timeline? Anything else I should know..."></textarea>
+        </div>
+
+        <button type="submit" class="form-submit">Send brief →</button>
+        <p class="form-note">Or DM @razikmuhammed on Instagram — fastest way</p>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Razik Muhammed</span>
+    <span class="signature"><em>Made in Kerala · Built for the world</em></span>
+    <span>All rights reserved</span>
+  </footer>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const canvas = document.getElementById('scene');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0x0a0a0c, 1);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x0a0a0c, 0.04);
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 200);
+camera.position.set(0, 0, 12);
+
+const keyLight = new THREE.DirectionalLight(0xd4a574, 1.6); keyLight.position.set(5,4,6); scene.add(keyLight);
+const fillLight = new THREE.DirectionalLight(0x4a6fa5, 0.5); fillLight.position.set(-6,2,3); scene.add(fillLight);
+const rimLight = new THREE.PointLight(0xc8553d, 1.5, 30); rimLight.position.set(-3,-2,-5); scene.add(rimLight);
+scene.add(new THREE.AmbientLight(0x1a1814, 0.3));
+
+const lenses = [];
+const lensGroup = new THREE.Group();
+scene.add(lensGroup);
+function createLens(radius, tube, x, y, z, color) {
+  const mesh = new THREE.Mesh(
+    new THREE.TorusGeometry(radius, tube, 32, 100),
+    new THREE.MeshPhysicalMaterial({ color, metalness: 0.85, roughness: 0.25, clearcoat: 0.6, clearcoatRoughness: 0.2 })
+  );
+  mesh.position.set(x,y,z);
+  mesh.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, 0);
+  mesh.userData = {
+    rotSpeed: { x: (Math.random()-0.5)*0.003, y: (Math.random()-0.5)*0.003 },
+    floatPhase: Math.random()*Math.PI*2, baseY: y
+  };
+  lensGroup.add(mesh); lenses.push(mesh);
+}
+createLens(2.4, 0.08, -7, 1, -4, 0x3a3a40);
+createLens(1.6, 0.05, 6, -1, -3, 0x4a4540);
+createLens(1.0, 0.04, 3, 3, -8, 0x5a5550);
+createLens(3.2, 0.06, -4, -3, -12, 0x2a2a30);
+createLens(0.7, 0.03, 8, 2, -2, 0x6a5040);
+
+function createDisk(radius, x, y, z, color, opacity) {
+  const mesh = new THREE.Mesh(
+    new THREE.CircleGeometry(radius, 64),
+    new THREE.MeshBasicMaterial({ color, transparent: true, opacity, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending })
+  );
+  mesh.position.set(x,y,z);
+  scene.add(mesh);
+}
+createDisk(1.4, -7, 1, -3.8, 0xd4a574, 0.15);
+createDisk(0.9, 6, -1, -2.8, 0xc8553d, 0.18);
+createDisk(2.0, -4, -3, -11.5, 0x4a6fa5, 0.08);
+
+function createBeam(x, y, z, rotZ, color) {
+  const beam = new THREE.Mesh(
+    new THREE.ConeGeometry(2.2, 18, 32, 1, true),
+    new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.06, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending })
+  );
+  beam.position.set(x,y,z); beam.rotation.z = rotZ;
+  scene.add(beam); return beam;
+}
+const beam1 = createBeam(-6, 4, -8, 0.4, 0xd4a574);
+const beam2 = createBeam(7, 5, -10, -0.3, 0xc8553d);
+
+const particleCount = 800;
+const particles = new THREE.BufferGeometry();
+const posArr = new Float32Array(particleCount * 3);
+for (let i = 0; i < particleCount; i++) {
+  posArr[i*3]   = (Math.random()-0.5) * 40;
+  posArr[i*3+1] = (Math.random()-0.5) * 25;
+  posArr[i*3+2] = (Math.random()-0.5) * 30 - 5;
+}
+particles.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
+const particleSystem = new THREE.Points(particles, new THREE.PointsMaterial({
+  color: 0xd4a574, size: 0.04, transparent: true, opacity: 0.55,
+  depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true,
+}));
+scene.add(particleSystem);
+
+const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+window.addEventListener('mousemove', e => {
+  mouse.tx = (e.clientX / window.innerWidth - 0.5) * 2;
+  mouse.ty = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+let scrollProgress = 0;
+window.addEventListener('scroll', () => {
+  const max = document.body.scrollHeight - window.innerHeight;
+  scrollProgress = Math.min(window.scrollY / max, 1);
+});
+
+window.addEventListener('resize', () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+});
+
+const clock = new THREE.Clock();
+function animate() {
+  const t = clock.getElapsedTime();
+  mouse.x += (mouse.tx - mouse.x) * 0.05;
+  mouse.y += (mouse.ty - mouse.y) * 0.05;
+
+  camera.position.x = mouse.x * 0.8;
+  camera.position.y = -mouse.y * 0.5 - scrollProgress * 2;
+  camera.position.z = 12 - scrollProgress * 14;
+  camera.rotation.z = mouse.x * 0.02;
+  camera.lookAt(0, 0, -5 - scrollProgress * 8);
+
+  lenses.forEach(l => {
+    l.rotation.x += l.userData.rotSpeed.x;
+    l.rotation.y += l.userData.rotSpeed.y;
+    l.position.y = l.userData.baseY + Math.sin(t * 0.5 + l.userData.floatPhase) * 0.3;
+  });
+
+  beam1.material.opacity = 0.05 + Math.sin(t*0.7)*0.02;
+  beam2.material.opacity = 0.05 + Math.sin(t*0.5 + 1)*0.02;
+  beam1.rotation.z = 0.4 + Math.sin(t*0.3)*0.03;
+
+  const pos = particleSystem.geometry.attributes.position.array;
+  for (let i = 0; i < particleCount; i++) {
+    pos[i*3+1] += 0.003;
+    pos[i*3]   += Math.sin(t*0.2 + i*0.1) * 0.001;
+    if (pos[i*3+1] > 12) pos[i*3+1] = -12;
+  }
+  particleSystem.geometry.attributes.position.needsUpdate = true;
+  particleSystem.rotation.y = t * 0.02;
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
+animate();
+
+// Portrait 3D tilt on mouse move
+const portraitFrame = document.getElementById('portraitFrame');
+if (portraitFrame) {
+  const portraitWrap = document.getElementById('portrait');
+  portraitWrap.addEventListener('mousemove', e => {
+    const r = portraitWrap.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width - 0.5) * 2;
+    const y = ((e.clientY - r.top) / r.height - 0.5) * 2;
+    portraitFrame.style.transform = `rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateZ(20px)`;
+  });
+  portraitWrap.addEventListener('mouseleave', () => {
+    portraitFrame.style.transform = 'rotateY(0) rotateX(0) translateZ(0)';
+  });
+}
+
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('done'), 600);
+});
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => e.isIntersecting && e.target.classList.add('in'));
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+function handleSubmit(e) {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const service = document.getElementById('service').value;
+  const message = document.getElementById('message').value;
+  const text = `Hi Razik,%0A%0AName: ${name}%0AEmail: ${email}%0AService: ${service}%0A%0A${message}`;
+  window.open(`https://wa.me/9061807019?text=${text}`, '_blank');
+}
+</script>
+
+</body>
+</html>
